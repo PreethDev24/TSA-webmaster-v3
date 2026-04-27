@@ -9,10 +9,8 @@ import { chromium } from 'playwright';
   await page.goto('http://localhost:3001/');
   await page.waitForTimeout(1000);
 
-  // Scroll in steps and take screenshots
   for (let i = 0; i < 4; i++) {
     await page.screenshot({ path: `/Users/aditya/Documents/tsa site/tsa-website/debug-snap-${i}.png` });
-    // Scroll down significantly
     await page.mouse.wheel(0, 500);
     await page.waitForTimeout(300);
   }

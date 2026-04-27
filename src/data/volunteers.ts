@@ -86,7 +86,7 @@ export const volunteerOpportunities: VolunteerOpportunity[] = [
     cause: "Community",
     description: "Volunteers In Tracy Actively Linked. Various city programs and events. Open to all ages. Students can earn community service hours.",
     commitment: "Flexible",
-    contact: "209-831-6200 | parks@cityoftracy.org",
+    contact: "123-456-7890 | parks@cityoftracy.org",
     applyUrl: "https://www.cityoftracy.org"
   },
   {

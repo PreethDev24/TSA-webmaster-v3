@@ -14,7 +14,6 @@ async function run() {
     await page.goto(`http://localhost:3001${path}`, { waitUntil: 'load', timeout: 15000 });
     await page.waitForTimeout(2500); // let Three.js/GSAP init
     
-    // Check the canvas rendered something (3D loaded)
     const canvasExists = await page.$('canvas') !== null;
     
     const webglErrors = errors.filter(e => !e.includes('Download the React DevTools'));

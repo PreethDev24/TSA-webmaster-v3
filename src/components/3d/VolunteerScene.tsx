@@ -5,7 +5,6 @@ import { useFrame } from '@react-three/fiber';
 import { Sparkles, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Rising ember/firefly particle
 function Ember({ x, z, delay, color }: { x: number; z: number; delay: number; color: string }) {
   const ref = useRef<THREE.Mesh>(null);
   const speed = useMemo(() => 0.25 + Math.random() * 0.4, []);
@@ -32,7 +31,6 @@ function Ember({ x, z, delay, color }: { x: number; z: number; delay: number; co
   );
 }
 
-// Heart shape using tube geometry along a heart curve
 function Heart({ position, color, scale = 1 }: {
   position: [number, number, number]; color: string; scale?: number;
 }) {
@@ -64,17 +62,14 @@ function Heart({ position, color, scale = 1 }: {
   );
 }
 
-// People cluster — simplified glowing humanoid icon form (capsule + sphere)
 function PersonIcon({ position, color }: { position: [number, number, number]; color: string }) {
   return (
     <Float speed={1.5} floatIntensity={0.3} rotationIntensity={0.05}>
       <group position={position}>
-        {/* Head */}
         <mesh position={[0, 0.38, 0]}>
           <sphereGeometry args={[0.14, 16, 16]} />
           <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} />
         </mesh>
-        {/* Body */}
         <mesh position={[0, 0, 0]}>
           <capsuleGeometry args={[0.1, 0.38, 8, 12]} />
           <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.0} transparent opacity={0.85} />
@@ -114,15 +109,12 @@ export default function VolunteerScene() {
       <pointLight position={[3, 1, 1]} color="#4A90D9" intensity={3} distance={10} />
       <Environment preset="night" />
 
-      {/* Rising ember particles */}
       {embers.map((e, i) => <Ember key={i} {...e} />)}
 
-      {/* Heart shapes floating in the scene */}
       <Heart position={[0, 0.8, 0]} color="#ff7675" scale={1.8} />
       <Heart position={[-3, 1.5, -1]} color="#D97706" scale={0.9} />
       <Heart position={[3.2, 1.2, -0.5]} color="#ff7675" scale={1.1} />
 
-      {/* People icons */}
       {people.map((p, i) => <PersonIcon key={i} {...p} />)}
 
       <Sparkles count={150} scale={[16, 10, 10]} size={1.5} speed={0.3} color="#ff7675" opacity={0.6} />

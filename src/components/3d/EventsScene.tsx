@@ -5,7 +5,6 @@ import { useFrame } from '@react-three/fiber';
 import { Sparkles, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
-// A single glowing floating lantern
 function Lantern({ position, delay = 0, color = '#ffd670' }: {
   position: [number, number, number];
   delay?: number;
@@ -21,7 +20,6 @@ function Lantern({ position, delay = 0, color = '#ffd670' }: {
 
   return (
     <group ref={ref} position={position}>
-      {/* Lantern body */}
       <mesh castShadow>
         <cylinderGeometry args={[0.18, 0.22, 0.45, 12]} />
         <meshStandardMaterial
@@ -34,23 +32,19 @@ function Lantern({ position, delay = 0, color = '#ffd670' }: {
           metalness={0}
         />
       </mesh>
-      {/* Top cap */}
       <mesh position={[0, 0.28, 0]}>
         <coneGeometry args={[0.22, 0.18, 12]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.2} />
       </mesh>
-      {/* Bottom fringe */}
       <mesh position={[0, -0.28, 0]}>
         <coneGeometry args={[0.18, 0.14, 12, 1, true]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.2} />
       </mesh>
-      {/* Glow point light */}
       <pointLight color={color} intensity={2.5} distance={3.5} decay={2} />
     </group>
   );
 }
 
-// Ribbon / streamer forming an arc across the scene
 function Streamer({ color, startAngle, radius = 5 }: { color: string; startAngle: number; radius?: number }) {
   const points = useMemo(() => {
     const pts = [];
@@ -77,7 +71,6 @@ function Streamer({ color, startAngle, radius = 5 }: { color: string; startAngle
   return <primitive object={line} />;
 }
 
-// Firework burst at a point
 function Burst({ position, color }: { position: [number, number, number]; color: string }) {
   const geo = useMemo(() => {
     const positions = new Float32Array(60 * 3);
@@ -131,20 +124,16 @@ export default function EventsScene() {
       <ambientLight intensity={0.2} color="#1a0a2e" />
       <Environment preset="night" />
 
-      {/* Streamers */}
       <Streamer color="#ffd670" startAngle={0} radius={5} />
       <Streamer color="#ff9f7f" startAngle={0.7} radius={4.5} />
       <Streamer color="#ff7eb3" startAngle={1.4} radius={5.5} />
 
-      {/* Lanterns */}
       {lanterns.map((l, i) => <Lantern key={i} {...l} />)}
 
-      {/* Burst clusters */}
       <Burst position={[-3, 2.5, -1]} color="#ffd670" />
       <Burst position={[3, 2.8, -1.5]} color="#ff9f7f" />
       <Burst position={[0, 3.2, -2]} color="#ff7eb3" />
 
-      {/* Ambient sparkles */}
       <Sparkles count={200} scale={[16, 10, 10]} size={1.2} speed={0.3} color="#ffd670" opacity={0.7} />
       <Sparkles count={100} scale={[14, 8, 8]} size={0.8} speed={0.4} color="#ff9f7f" opacity={0.5} />
     </group>

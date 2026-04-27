@@ -4,7 +4,6 @@ import { chromium } from 'playwright';
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   
-  // Force reload to pick up latest Vite changes
   await page.goto('http://localhost:3001/', { waitUntil: 'networkidle' });
   await page.waitForTimeout(3000); // Wait for WebGL to initialize
 

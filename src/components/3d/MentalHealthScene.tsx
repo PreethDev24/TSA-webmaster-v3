@@ -5,12 +5,10 @@ import { useFrame } from '@react-three/fiber';
 import { Sparkles, Environment, MeshDistortMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Calm animated water plane
 function WaterSurface() {
   const meshRef = useRef<THREE.Mesh>(null);
   useFrame((state) => {
     if (meshRef.current) {
-      // animate UV offset to give flowing feel
       (meshRef.current.material as THREE.MeshStandardMaterial).envMapIntensity =
         0.5 + Math.sin(state.clock.elapsedTime * 0.4) * 0.2;
     }
@@ -34,7 +32,6 @@ function WaterSurface() {
   );
 }
 
-// Rising light particle — bioluminescent
 function LightParticle({ x, z, delay }: { x: number; z: number; delay: number }) {
   const ref = useRef<THREE.Mesh>(null);
   const colors = ['#56d8e4', '#7ee8fa', '#80ff72', '#a8edea'];
@@ -60,7 +57,6 @@ function LightParticle({ x, z, delay }: { x: number; z: number; delay: number })
   );
 }
 
-// The calm breathing central orb
 function BreathingOrb() {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((state) => {
@@ -73,7 +69,6 @@ function BreathingOrb() {
 
   return (
     <group>
-      {/* Outer glow shell — large transparent */}
       <mesh>
         <sphereGeometry args={[1.6, 32, 32]} />
         <meshStandardMaterial
@@ -86,7 +81,6 @@ function BreathingOrb() {
           metalness={0.8}
         />
       </mesh>
-      {/* Mid shell */}
       <mesh>
         <sphereGeometry args={[1.1, 32, 32]} />
         <meshStandardMaterial
@@ -97,7 +91,6 @@ function BreathingOrb() {
           opacity={0.1}
         />
       </mesh>
-      {/* Core */}
       <mesh ref={ref}>
         <sphereGeometry args={[0.62, 48, 48]} />
         <MeshDistortMaterial

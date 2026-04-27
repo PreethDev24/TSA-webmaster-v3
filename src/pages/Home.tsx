@@ -1,43 +1,14 @@
 'use client';
 
-import { useEffect, useLayoutEffect, useRef, useState, Suspense } from 'react';
+import { useLayoutEffect, useRef, useState, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion, useScroll, useTransform } from '@/lib/motion-compat';
 import { Canvas } from '@react-three/fiber';
 import { Building2, Heart, Link2, Rocket, Shield, AlertTriangle, ArrowRight, Users, Calendar, HandHeart } from 'lucide-react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import QuickAccessGrid from '@/components/cards/QuickAccessCard';
 import EventCard from '@/components/cards/EventCard';
 import { events } from '@/data/events';
 import HeroScene from '@/components/3d/HeroScene';
-
-gsap.registerPlugin(ScrollTrigger);
-
-function AnimatedNumber({ value, suffix = '' }: { value: string; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(ref.current,
-        { textContent: '0' },
-        {
-          textContent: value,
-          duration: 2,
-          ease: 'power2.out',
-          snap: { textContent: 1 },
-          scrollTrigger: {
-            trigger: ref.current,
-            start: 'top 85%',
-          },
-        }
-      );
-    });
-    return () => ctx.revert();
-  }, [value]);
-
-  return <span ref={ref}>{value}{suffix}</span>;
-}
 
 function ParallaxHero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -80,12 +51,6 @@ function ParallaxHero() {
     { clamp: true }
   );
 
-  // Calculate opacities for the different scrollytelling text blocks
-  // Synced with the 3D camera rig in HeroScene.
-  // 0.0 - 0.15: Main Hero Text
-  // 0.2 - 0.4: Business Text
-  // 0.4 - 0.6: NPO Text
-  // 0.6 - 0.8: Services Text
 
   const heroOpacity = useTransform(scrollYProgress, [0, 0.18, 0.26], [1, 1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 0.26], ['0%', '-22%']);
@@ -102,15 +67,12 @@ function ParallaxHero() {
   return (
     <div ref={ref} className="relative h-[430vh] bg-canvas">
       
-      {/* Sticky Container holding the Background and 3D Canvas */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         
-        {/* Dusk city atmosphere behind the scrollytelling Canvas */}
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_18%_16%,rgba(255,214,122,0.18),transparent_24%),radial-gradient(circle_at_74%_28%,rgba(74,144,217,0.28),transparent_32%),radial-gradient(circle_at_84%_68%,rgba(85,239,196,0.18),transparent_28%),linear-gradient(150deg,#06111f_0%,#10273b_38%,#180f28_68%,#020713_100%)]" />
         <div className="absolute inset-0 z-0 opacity-[0.18] bg-[linear-gradient(115deg,transparent_0%,rgba(255,255,255,0.18)_42%,transparent_55%),linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:100%_100%,96px_96px,96px_96px]" />
         <div className="absolute inset-x-0 top-0 z-0 h-40 bg-surface ]" />
         
-        {/* 3D Scrollytelling Scene */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <Canvas
             shadows="soft"
@@ -124,96 +86,90 @@ function ParallaxHero() {
           </Canvas>
         </div>
 
-        {/* Subtle vignette overlay */}
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(2,6,23,0.62)_100%)]" />
 
-        {/* HTML Text Overlays (Synchronized to Scroll) */}
         <div className="absolute inset-0 z-10 flex items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Section 1: Main Welcome */}
           <motion.div style={{ opacity: heroOpacity, y: heroY }} className="absolute max-w-md pointer-events-auto">
-            <span className="inline-block px-4 py-2 bg-surface border border-outline text-xs font-medium uppercase tracking-widest text-ink mb-6">
+            <span className="inline-block px-4 py-2 bg-white/10 border border-white/40 text-xs font-medium uppercase tracking-widest text-white mb-6">
               Welcome to Tracy
             </span>
             <h1 className="font-black tracking-tighter uppercase text-3xl sm:text-[2.55rem] md:text-[3.05rem] lg:text-[3.45rem] font-bold text-ink mb-6 leading-[0.94] tracking-[-0.035em] drop-">
-              <span className="block">Your Community.</span>
-              <span className="block text-ink">Your Resources.</span>
-              <span className="block">Your Home.</span>
+              <span className="block text-white">Your Community.</span>
+              <span className="block text-white">Your Resources.</span>
+              <span className="block text-white">Your Home.</span>
             </h1>
-            <p className="text-sm md:text-base text-ink mb-8 max-w-sm leading-relaxed">
+            <p className="text-sm md:text-base text-white/90 mb-8 max-w-sm leading-relaxed">
               Connecting Tracy residents with local services, events, mental health support, and opportunities to give back.
             </p>
             <div className="flex flex-wrap gap-5">
-              <Link to="/resources" className="group relative px-8 py-4 bg-surface hover:bg-surface-light text-ink font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(74,144,217,0.3)] hover:shadow-[0_0_30px_rgba(74,144,217,0.5)] hover:-translate-y-0 flex items-center overflow-hidden">
+              <Link to="/resources" className="group relative px-8 py-4 border border-white/70 bg-surface hover:bg-surface-light text-white font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(74,144,217,0.3)] hover:shadow-[0_0_30px_rgba(74,144,217,0.5)] hover:-translate-y-0 flex items-center overflow-hidden">
                 <span className="relative z-10 flex items-center">
                   Find Resources
                   <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
-              <Link to="/events" className="px-8 py-4 bg-surface hover:bg-surface text-ink border border-outline font-semibold transition-all duration-300 hover:-translate-y-0">
+              <Link to="/events" className="px-8 py-4 bg-surface hover:bg-surface text-white border border-outline font-semibold transition-all duration-300 hover:-translate-y-0">
                 Explore Events
               </Link>
             </div>
           </motion.div>
 
-        {/* Section 2: Local Businesses */}
         <div className="absolute inset-0 flex items-start justify-end px-4 pt-28 sm:px-6 sm:pt-32 lg:px-8">
-          <motion.div style={{ opacity: businessOpacity, y: businessY }} className="max-w-lg pointer-events-auto border border-outline bg-surface p-8">
+          <motion.div style={{ opacity: businessOpacity, y: businessY }} className="max-w-lg pointer-events-auto border border-white/30 bg-black/35 p-8 backdrop-blur-sm">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 border border-outline bg-canvas flex items-center justify-center">
-                <Building2 className="w-7 h-7 text-ink" />
+              <div className="w-14 h-14 border border-white/35 bg-white/10 flex items-center justify-center">
+                <Building2 className="w-7 h-7 text-white" />
               </div>
-              <div className="w-12 h-[1px] bg-outline" />
+              <div className="w-12 h-[1px] bg-white/50" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-ink mb-4 uppercase tracking-tighter">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter">
               Local Businesses
             </h2>
-            <p className="text-lg text-ink/70 leading-relaxed mb-6 max-w-md font-mono">
+            <p className="text-lg text-white/85 leading-relaxed mb-6 max-w-md font-mono">
               Discover and support the shops, restaurants, and services that build the foundation of our community.
             </p>
-            <Link to="/resources?category=business" className="inline-flex items-center gap-2 px-6 py-3 bg-surface hover:bg-outline text-ink border border-outline font-bold transition-all">
+            <Link to="/resources?category=business" className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white border border-white/40 font-bold transition-all">
               View Directory <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </div>
 
-        {/* Section 3: Non-Profits */}
         <div className="absolute inset-0 flex items-start justify-start px-4 pt-28 sm:px-6 sm:pt-32 lg:px-8">
-          <motion.div style={{ opacity: npoOpacity, y: npoY }} className="max-w-lg pointer-events-auto border border-outline bg-surface p-8">
+          <motion.div style={{ opacity: npoOpacity, y: npoY }} className="max-w-lg pointer-events-auto border border-white/30 bg-black/35 p-8 backdrop-blur-sm">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 border border-outline bg-canvas flex items-center justify-center">
-                <Heart className="w-7 h-7 text-ink" />
+              <div className="w-14 h-14 border border-white/35 bg-white/10 flex items-center justify-center">
+                <Heart className="w-7 h-7 text-white" />
               </div>
-              <div className="w-12 h-[1px] bg-outline" />
+              <div className="w-12 h-[1px] bg-white/50" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-ink mb-4 uppercase tracking-tighter">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter">
               Non-Profit Organizations
             </h2>
-            <p className="text-lg text-ink/70 leading-relaxed mb-6 max-w-md font-mono">
+            <p className="text-lg text-white/85 leading-relaxed mb-6 max-w-md font-mono">
               Connect with local charities, find volunteer opportunities, and make a real difference in Tracy.
             </p>
-            <Link to="/resources?category=npo" className="inline-flex items-center gap-2 px-6 py-3 bg-surface hover:bg-outline text-ink border border-outline font-bold transition-all">
+            <Link to="/resources?category=npo" className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white border border-white/40 font-bold transition-all">
               Get Involved <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
         </div>
 
-        {/* Section 4: City Services */}
         <div className="absolute inset-0 flex items-start justify-end px-4 pt-28 sm:px-6 sm:pt-32 lg:px-8">
-          <motion.div style={{ opacity: servicesOpacity, y: servicesY }} className="max-w-lg pointer-events-auto border border-outline bg-surface p-8">
+          <motion.div style={{ opacity: servicesOpacity, y: servicesY }} className="max-w-lg pointer-events-auto border border-white/30 bg-black/35 p-8 backdrop-blur-sm">
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 border border-outline bg-canvas flex items-center justify-center">
-                <Shield className="w-7 h-7 text-ink" />
+              <div className="w-14 h-14 border border-white/35 bg-white/10 flex items-center justify-center">
+                <Shield className="w-7 h-7 text-white" />
               </div>
-              <div className="w-12 h-[1px] bg-outline" />
+              <div className="w-12 h-[1px] bg-white/50" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-ink mb-4 uppercase tracking-tighter">
+            <h2 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter">
               City & Social Services
             </h2>
-            <p className="text-lg text-ink/70 leading-relaxed mb-6 max-w-md font-mono">
+            <p className="text-lg text-white/85 leading-relaxed mb-6 max-w-md font-mono">
               Access critical support when you need it most. Mental health resources, city planning, and more.
             </p>
-            <Link to="/resources?category=services" className="inline-flex items-center gap-2 px-6 py-3 bg-surface hover:bg-outline text-ink border border-outline font-bold transition-all">
+            <Link to="/resources?category=services" className="inline-flex items-center gap-2 px-6 py-3 bg-white/15 hover:bg-white/25 text-white border border-white/40 font-bold transition-all">
               Access Services <ArrowRight className="w-4 h-4" />
             </Link>
           </motion.div>
@@ -235,7 +191,7 @@ function StatsSection() {
   ];
 
   return (
-    <section ref={ref} className="py-24 bg-surface relative overflow-hidden">
+    <section ref={ref} id="nav-dark-start" className="py-24 bg-surface relative overflow-hidden">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5" />
       </div>
@@ -263,9 +219,7 @@ function StatsSection() {
                 <div className="w-16 h-16 bg-surface flex items-center justify-center mb-5 group-hover:scale-100 transition-transform">
                   <Icon className="w-8 h-8 text-ink" />
                 </div>
-                <p className="text-5xl font-bold text-ink mb-2">
-                  <AnimatedNumber value={stat.value} />
-                </p>
+                <p className="text-5xl font-bold text-ink mb-2">{stat.value}</p>
                 <p className="text-ink text-lg">{stat.label}</p>
               </motion.div>
             );

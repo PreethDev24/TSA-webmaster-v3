@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'motion/react';
-import { CheckCircle, BookOpen, ExternalLink, HandHeart, Users, Wrench } from 'lucide-react';
+import { motion } from '@/lib/motion-compat';
+import { CheckCircle, BookOpen, ExternalLink, HandHeart } from 'lucide-react';
 import { volunteerOpportunities, volunteerCauses, donationOrgs, tutors, skills, skillCategories } from '@/data/volunteers';
 import CinematicScrollyHero from '@/components/CinematicScrollyHero';
 
@@ -30,6 +30,7 @@ export default function Volunteer() {
         accent="#f43f5e"
         secondary="#f59e0b"
         background="linear-gradient(135deg, #120502 0%, #250909 48%, #101406 100%)"
+        textMode="light"
         icon={HandHeart}
         showIcon={false}
         heightClassName="h-[170vh] md:h-[190vh]"
@@ -49,7 +50,8 @@ export default function Volunteer() {
         ]}
       />
 
-      <motion.div 
+      <motion.div
+        id="nav-dark-start"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}

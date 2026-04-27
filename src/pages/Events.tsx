@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'motion/react';
+import { motion } from '@/lib/motion-compat';
 import { Calendar, List, LayoutGrid } from 'lucide-react';
 import EventCard from '@/components/cards/EventCard';
 import { events, eventCategories, eventDateFilters } from '@/data/events';
@@ -41,6 +41,7 @@ export default function Events() {
         accent="#f59e0b"
         secondary="#f43f5e"
         background="linear-gradient(135deg, #100408 0%, #220817 42%, #120b02 100%)"
+        textMode="light"
         icon={Calendar}
         showIcon={false}
         heightClassName="h-[170vh] md:h-[190vh]"
@@ -60,7 +61,7 @@ export default function Events() {
         ]}
       />
 
-      <section className="py-16 pb-24 bg-gradient-to-b from-navy to-offwhite">
+      <section id="nav-dark-start" className="py-16 pb-24 bg-gradient-to-b from-navy to-offwhite">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -1,7 +1,7 @@
 'use client';
 
 import { type ReactNode } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from '@/lib/motion-compat';
 import { useLocation } from 'react-router-dom';
 
 interface PageTransitionProps {

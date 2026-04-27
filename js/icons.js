@@ -1,4 +1,3 @@
-/** Inline SVGs (24x24 stroke) — same visual role as Lucide icons in the React app */
 const stroke = 'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
 
 export const icons = {

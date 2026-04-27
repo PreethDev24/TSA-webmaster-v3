@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { motion } from 'motion/react';
-import { Phone, MessageSquare, AlertTriangle, Play, Pause, RotateCcw, ChevronRight, Clock, BookOpen, Heart, Users, Wind } from 'lucide-react';
+import { motion } from '@/lib/motion-compat';
+import { Phone, MessageSquare, AlertTriangle, Play, Pause, RotateCcw, ChevronRight, Clock, BookOpen, Heart, Users } from 'lucide-react';
 import TherapistCard from '@/components/cards/TherapistCard';
 import { therapists, therapistSpecialties, therapistInsurance, therapistLanguages, therapistFormats } from '@/data/therapists';
 import CinematicScrollyHero from '@/components/CinematicScrollyHero';
@@ -242,6 +242,7 @@ export default function MentalHealth() {
         accent="#2dd4bf"
         secondary="#38bdf8"
         background="linear-gradient(135deg, #010d12 0%, #022125 56%, #010812 100%)"
+        textMode="light"
         icon={Heart}
         showIcon={false}
         heightClassName="h-[170vh] md:h-[190vh]"
@@ -261,7 +262,8 @@ export default function MentalHealth() {
         ]}
       />
 
-      <motion.section 
+      <motion.section
+        id="nav-dark-start"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}

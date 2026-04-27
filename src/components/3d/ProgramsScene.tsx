@@ -5,7 +5,6 @@ import { useFrame } from '@react-three/fiber';
 import { Float, Sparkles, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
-// One orbital ring with orbiting activity icons (spheres)
 function OrbitalRing({ radius, speed, color, count = 5, tilt = 0, size = 0.15 }: {
   radius: number; speed: number; color: string; count?: number; tilt?: number; size?: number;
 }) {
@@ -21,12 +20,10 @@ function OrbitalRing({ radius, speed, color, count = 5, tilt = 0, size = 0.15 }:
 
   return (
     <group ref={groupRef}>
-      {/* The ring itself */}
       <mesh rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[radius, 0.015, 8, 80]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.8} transparent opacity={0.4} />
       </mesh>
-      {/* Orbiting spheres */}
       {orbs.map((frac, i) => {
         const angle = frac * Math.PI * 2;
         const x = Math.cos(angle) * radius;
@@ -42,7 +39,6 @@ function OrbitalRing({ radius, speed, color, count = 5, tilt = 0, size = 0.15 }:
   );
 }
 
-// Central pulsing energy core
 function CoreSphere() {
   const ref = useRef<THREE.Mesh>(null);
   useFrame((state) => {
@@ -72,7 +68,6 @@ function CoreSphere() {
   );
 }
 
-// Geometric floating accent tokens (sport ball, art brush, science flask, fitness ring)
 function AccentToken({ position, color, shape }: {
   position: [number, number, number];
   color: string;
@@ -113,16 +108,13 @@ export default function ProgramsScene() {
       <pointLight position={[0, 4, -2]} color="#16A34A" intensity={4} distance={10} />
       <Environment preset="night" />
 
-      {/* Orbital rings at different angles */}
       <OrbitalRing radius={2.5} speed={0.35} color="#9333EA" count={6} tilt={0} />
       <OrbitalRing radius={3.5} speed={-0.22} color="#4A90D9" count={8} tilt={0.5} size={0.12} />
       <OrbitalRing radius={4.5} speed={0.18} color="#D97706" count={10} tilt={-0.4} size={0.1} />
       <OrbitalRing radius={1.5} speed={0.55} color="#16A34A" count={4} tilt={1.1} size={0.18} />
 
-      {/* Central energy core */}
       <CoreSphere />
 
-      {/* Accent tokens at corners */}
       <AccentToken position={[-4, 2, 0]} color="#D97706" shape="sphere" />
       <AccentToken position={[4, 2, 0]} color="#9333EA" shape="torus" />
       <AccentToken position={[-4, -2, 0]} color="#4A90D9" shape="box" />

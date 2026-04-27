@@ -45,7 +45,7 @@ export default function ResourceCard({
   return (
     <div
       ref={ref}
-      className={`reveal reveal-delay-${Math.min(index + 1, 5)} ${isRevealed ? 'revealed' : ''} bg-white rounded-lg border border-border p-5 card-hover group`}
+      className={`reveal reveal-delay-${Math.min(index + 1, 5)} ${isRevealed ? 'revealed' : ''} card-hover group flex h-full min-h-[320px] flex-col bg-white rounded-lg border border-border p-5`}
     >
       <div className="flex flex-wrap gap-2 mb-3">
         {categories.map((cat) => (
@@ -64,7 +64,7 @@ export default function ResourceCard({
 
       <p className="text-sm text-textsecondary mb-4 line-clamp-3">{description}</p>
 
-      <div className="space-y-1.5 text-sm">
+      <div className="mt-auto space-y-1.5 text-sm">
         {phone && (
           <div className="flex items-center gap-2 text-textsecondary">
             <Phone className="w-3.5 h-3.5 shrink-0" />

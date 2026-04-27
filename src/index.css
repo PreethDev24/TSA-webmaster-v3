@@ -86,7 +86,6 @@
   }
 }
 
-/* Breathing exercise animations */
 @keyframes breathe-box {
   0%, 100% { transform: scale(1); }
   25% { transform: scale(1.5); }
@@ -116,7 +115,6 @@
   animation: breathe-478 19s linear infinite;
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .reveal {
     opacity: 1;
@@ -136,7 +134,6 @@
   }
 }
 
-/* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;
 }

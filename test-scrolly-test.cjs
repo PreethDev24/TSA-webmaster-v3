@@ -1,7 +1,6 @@
 const { chromium } = require('playwright');
 
 async function run() {
-  // Launch in non-headless mode so the user can see it LIVE!
   const browser = await chromium.launch({ headless: false, slowMo: 50 });
   const context = await browser.newContext({
     viewport: { width: 1280, height: 800 }
@@ -21,11 +20,9 @@ async function run() {
     try {
       await page.goto(url, { waitUntil: 'load' });
       
-      // Wait a moment for things to settle
       await page.waitForTimeout(1000);
       
       console.log(`Scrolling ${pagePath} to demonstrte smooth scrollytelling...`);
-      // Scroll down slowly in small increments to show the parallax beautifully
       for (let i = 0; i < 20; i++) {
         await page.evaluate(() => window.scrollBy({ top: 30, behavior: 'instant' }));
         await page.waitForTimeout(100);
@@ -38,7 +35,6 @@ async function run() {
 
       await page.waitForTimeout(1000);
 
-      // Scroll back up to demonstrate again
       console.log(`Scrolling back up ${pagePath}...`);
       for (let i = 0; i < 20; i++) {
         await page.evaluate(() => window.scrollBy({ top: -60, behavior: 'instant' }));

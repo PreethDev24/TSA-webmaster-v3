@@ -14,6 +14,7 @@ const navLinks = [
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [useDarkText, setUseDarkText] = useState(false);
   const location = useLocation();
 
   const closeMobileMenu = () => setMobileOpen(false);
@@ -49,9 +50,40 @@ export default function Navbar() {
     };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    let rafId = 0;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const markerTop = () => {
+      const marker = document.getElementById('nav-dark-start');
+      if (!marker) return window.innerHeight * 0.72;
+      return marker.getBoundingClientRect().top + window.scrollY;
+    };
+
+    const updateNavTone = () => {
+      const triggerY = markerTop();
+      const navOffset = window.scrollY + 88;
+      setUseDarkText(navOffset >= triggerY);
+    };
+
+    const onScroll = () => updateNavTone();
+    const onResize = () => updateNavTone();
+
+    rafId = window.requestAnimationFrame(updateNavTone);
+    timeoutId = setTimeout(updateNavTone, 180);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
+  }, [location.pathname]);
+
   return (
     <>
-      {/* Skip link */}
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-surface focus:text-ink focus:px-4 focus:py-2 focus:rounded"
@@ -70,14 +102,16 @@ export default function Navbar() {
         />
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
             <Link to="/" className="flex items-center shrink-0 group">
-              <span className="font-outfit font-semibold text-ink text-[1.2rem] sm:text-[1.45rem] leading-none tracking-[-0.01em]">
+              <span
+                className={`font-outfit font-semibold text-[1.2rem] sm:text-[1.45rem] leading-none tracking-[-0.01em] ${
+                  useDarkText ? 'text-[#0d1b2d]' : 'text-white'
+                }`}
+              >
                 Tracy Center
               </span>
             </Link>
 
-            {/* Desktop nav */}
             <div className="hidden lg:flex items-center gap-1 rounded-xl border border-white/20 bg-white/6 px-1.5 py-1">
               {navLinks.map((link) => {
                 const isActive = location.pathname === link.path;
@@ -87,12 +121,24 @@ export default function Navbar() {
                     to={link.path}
                     className={`relative rounded-lg px-3 py-2 text-[15px] font-semibold tracking-[0.01em] transition-all duration-200 ${
                       isActive
-                        ? 'bg-white/25 shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_8px_20px_rgba(8,21,44,0.3)]'
+                        ? `shadow-[inset_0_1px_0_rgba(255,255,255,0.45),0_8px_20px_rgba(8,21,44,0.3)] ${
+                            useDarkText ? 'bg-black/10' : 'bg-white/25'
+                          }`
                         : 'hover:bg-white/14'
                     }`}
                     aria-current={isActive ? 'page' : undefined}
                   >
-                    <span className={`relative z-10 ${isActive ? 'text-ink' : 'text-ink/90 hover:text-ink'}`}>
+                    <span
+                      className={`relative z-10 ${
+                        useDarkText
+                          ? isActive
+                            ? 'text-[#0d1b2d]'
+                            : 'text-[#0d1b2d]/90 hover:text-[#0d1b2d]'
+                          : isActive
+                            ? 'text-white'
+                            : 'text-white/90 hover:text-white'
+                      }`}
+                    >
                       {link.label}
                     </span>
                   </Link>
@@ -100,20 +146,22 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* Right side */}
             <div className="flex items-center gap-3">
               <a
                 href="tel:988"
-                className="hidden sm:inline-flex items-center gap-2 rounded-lg border border-white/30 bg-white/10 text-ink text-sm font-semibold px-4 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all hover:bg-white/20"
+                className={`hidden sm:inline-flex items-center gap-2 rounded-lg border bg-white/10 text-sm font-semibold px-4 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.35)] transition-all hover:bg-white/20 ${
+                  useDarkText ? 'border-black/20 text-[#0d1b2d]' : 'border-white/30 text-white'
+                }`}
               >
                 <Phone className="w-4 h-4" />
                 Get Help
               </a>
 
-              {/* Mobile menu button */}
               <button
                 onClick={() => setMobileOpen(!mobileOpen)}
-                className="lg:hidden rounded-lg border border-white/20 bg-white/10 p-2 text-ink transition-colors hover:bg-white/20"
+                className={`lg:hidden rounded-lg border bg-white/10 p-2 transition-colors hover:bg-white/20 ${
+                  useDarkText ? 'border-black/20 text-[#0d1b2d]' : 'border-white/20 text-white'
+                }`}
                 aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={mobileOpen}
                 aria-controls="mobile-nav-drawer"
@@ -125,7 +173,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile drawer */}
       <div
         className={`fixed inset-0 z-50 lg:hidden transition-opacity ${
           mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'

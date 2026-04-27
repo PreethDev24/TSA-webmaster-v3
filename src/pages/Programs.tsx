@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'motion/react';
+import { motion } from '@/lib/motion-compat';
 import { Info, ExternalLink, Dumbbell } from 'lucide-react';
 import ProgramCard from '@/components/cards/ProgramCard';
 import { programs, programAgeGroups, programCategories, programCosts } from '@/data/programs';
@@ -32,6 +32,7 @@ export default function Programs() {
         accent="#a855f7"
         secondary="#22c55e"
         background="linear-gradient(135deg, #070214 0%, #16072b 46%, #021507 100%)"
+        textMode="light"
         icon={Dumbbell}
         showIcon={false}
         heightClassName="h-[170vh] md:h-[190vh]"
@@ -51,7 +52,7 @@ export default function Programs() {
         ]}
       />
 
-      <section className="py-16 pb-24 bg-gradient-to-b from-navy to-offwhite">
+      <section id="nav-dark-start" className="py-16 pb-24 bg-gradient-to-b from-navy to-offwhite">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -175,7 +176,7 @@ export default function Programs() {
           </motion.div>
           
           <p className="text-navy/80 mb-6 text-lg">
-            Most programs can be registered online at tracyartsandrec.com or by calling 209-831-6200. 
+            Most programs can be registered online at tracyartsandrec.com or by calling 123-456-7890. 
             Walk-in registration is also available at the Tracy Community Center.
           </p>
           <a

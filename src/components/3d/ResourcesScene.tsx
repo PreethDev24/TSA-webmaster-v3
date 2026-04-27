@@ -5,7 +5,6 @@ import { useFrame } from '@react-three/fiber';
 import { Sparkles, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 
-// A single data node
 function DataNode({ position, color, size = 0.18 }: {
   position: [number, number, number]; color: string; size?: number;
 }) {
@@ -25,12 +24,10 @@ function DataNode({ position, color, size = 0.18 }: {
 
   return (
     <group position={position}>
-      {/* Outer glow sphere */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[size * 2.2, 16, 16]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} transparent opacity={0.12} />
       </mesh>
-      {/* Core node */}
       <mesh ref={meshRef}>
         <octahedronGeometry args={[size, 0]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={2.2} roughness={0.05} metalness={0.8} />
@@ -40,7 +37,6 @@ function DataNode({ position, color, size = 0.18 }: {
   );
 }
 
-// Connection beam between two nodes
 function Connection({ from, to, color }: {
   from: [number, number, number]; to: [number, number, number]; color: string;
 }) {
@@ -56,7 +52,6 @@ function Connection({ from, to, color }: {
   return <primitive object={line} />;
 }
 
-// Animated data stream — traveling dashes along a path
 function DataStream({ from, to, color }: {
   from: [number, number, number]; to: [number, number, number]; color: string;
 }) {

@@ -5,7 +5,6 @@ import { useFrame } from '@react-three/fiber';
 import { Sparkles, Environment, Float } from '@react-three/drei';
 import * as THREE from 'three';
 
-// A floating book / document slab with glowing edges
 function FloatingBook({ position, rotation, color, width = 0.7, height = 0.95, delay = 0 }: {
   position: [number, number, number];
   rotation: [number, number, number];
@@ -24,7 +23,6 @@ function FloatingBook({ position, rotation, color, width = 0.7, height = 0.95, d
 
   return (
     <group ref={ref} position={position} rotation={rotation}>
-      {/* Book cover */}
       <mesh castShadow>
         <boxGeometry args={[width, height, 0.06]} />
         <meshStandardMaterial
@@ -35,12 +33,10 @@ function FloatingBook({ position, rotation, color, width = 0.7, height = 0.95, d
           metalness={0.6}
         />
       </mesh>
-      {/* Glowing spine */}
       <mesh position={[-(width / 2) + 0.01, 0, 0]}>
         <boxGeometry args={[0.02, height, 0.065]} />
         <meshStandardMaterial color={color} emissive={color} emissiveIntensity={3} />
       </mesh>
-      {/* Text lines on cover */}
       {[0.28, 0.1, -0.05, -0.2].map((y, i) => (
         <mesh key={i} position={[0.05, y, 0.034]}>
           <boxGeometry args={[width * 0.6, 0.02, 0.002]} />
@@ -52,7 +48,6 @@ function FloatingBook({ position, rotation, color, width = 0.7, height = 0.95, d
   );
 }
 
-// Citation particle — small glowing text-dot that orbits
 function CitationOrb({ orbitRadius, speed, color, yOffset }: {
   orbitRadius: number; speed: number; color: string; yOffset: number;
 }) {
@@ -73,7 +68,6 @@ function CitationOrb({ orbitRadius, speed, color, yOffset }: {
   );
 }
 
-// Central rotating pile of books
 function BookStack() {
   const ref = useRef<THREE.Group>(null);
   useFrame((state) => {
@@ -129,13 +123,10 @@ export default function ReferencesScene() {
       <pointLight position={[3, -1, 0]} color="#9333EA" intensity={3} distance={10} />
       <Environment preset="night" />
 
-      {/* Books */}
       {books.map((b, i) => <FloatingBook key={i} {...b} />)}
 
-      {/* Central book stack */}
       <BookStack />
 
-      {/* Citation orbs orbiting the center */}
       {citOrbs.map((o, i) => <CitationOrb key={i} {...o} />)}
 
       <Sparkles count={120} scale={[16, 10, 10]} size={1.2} speed={0.2} color="#D97706" opacity={0.7} />

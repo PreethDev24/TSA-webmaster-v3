@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 
 interface ScrollySectionProps {
   children: React.ReactNode;
@@ -13,37 +12,30 @@ export default function ScrollySection({ children, className = '', id }: Scrolly
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const elements = sectionRef.current?.querySelectorAll('.reveal-on-scroll');
-      
-      elements?.forEach((el, i) => {
-        gsap.fromTo(el, 
-          { 
-            opacity: 0, 
-            y: 100,
-            scale: 0.9,
-            rotateX: -15,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            rotateX: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 85%',
-              end: 'top 50%',
-              toggleActions: 'play none none reverse',
-            },
-            delay: i * 0.1,
-          }
-        );
-      });
-    }, sectionRef);
+    const elements = sectionRef.current?.querySelectorAll<HTMLElement>('.reveal-on-scroll');
+    if (!elements || elements.length === 0) return;
 
-    return () => ctx.revert();
+    elements.forEach((el, i) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(32px) scale(0.98)';
+      el.style.transition = `opacity 520ms ease-out ${i * 70}ms, transform 520ms ease-out ${i * 70}ms`;
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0) scale(1)';
+          observer.unobserve(el);
+        });
+      },
+      { root: null, threshold: 0.2, rootMargin: '0px 0px -10% 0px' }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
   }, []);
 
   return (

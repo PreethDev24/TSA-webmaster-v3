@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from 'motion/react';
+import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from '@/lib/motion-compat';
 import type React from 'react';
 import type { LucideIcon } from 'lucide-react';
 import { ArrowDown } from 'lucide-react';
@@ -64,6 +64,9 @@ function ScrollyChapter({
 
   const headingClass = textMode === 'light' ? 'text-white' : 'text-ink';
   const bodyClass = textMode === 'light' ? 'text-white/90' : 'text-ink';
+  const textPanelClass = !chapter.content
+    ? 'rounded-2xl border border-white/20 bg-black/35 p-5 backdrop-blur-sm sm:p-6'
+    : '';
 
   return (
     <motion.div
@@ -73,7 +76,7 @@ function ScrollyChapter({
       } ${chapter.positionClassName ?? ''}`}
     >
       <div className={`max-w-7xl mx-auto w-full ${isRight ? 'lg:flex lg:justify-end' : ''}`}>
-        <div className="max-w-3xl">
+        <div className={`max-w-3xl ${textPanelClass}`}>
           <motion.h1
             style={{ x: titleX }}
             className={`mt-4 font-black tracking-tighter uppercase text-5xl font-bold leading-[0.92] drop- sm:text-6xl md:text-7xl ${headingClass}`}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { motion } from 'motion/react';
+import { motion } from '@/lib/motion-compat';
 import { Search, X, Building2, LayoutGrid, List } from 'lucide-react';
 import { resources, resourceCategories } from '@/data/resources';
 import ResourceCard from '@/components/cards/ResourceCard';
@@ -10,7 +10,6 @@ import CinematicScrollyHero from '@/components/CinematicScrollyHero';
 export default function Resources() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchScope, setSearchScope] = useState<'all' | 'name' | 'description' | 'categories'>('all');
   const [sortMode, setSortMode] = useState<'relevance' | 'az' | 'za'>('relevance');
   const [layoutMode, setLayoutMode] = useState<'grid' | 'compact'>('grid');
@@ -48,19 +47,16 @@ export default function Resources() {
   const toggleFilter = (category: string) => {
     if (category === 'All') {
       setActiveFilters([]);
-      setSelectedCategory('All');
       return;
     }
     setActiveFilters(prev =>
       prev.includes(category) ? prev.filter(f => f !== category) : [...prev, category]
     );
-    setSelectedCategory(category);
   };
 
   const clearFilters = () => {
     setActiveFilters([]);
     setSearchQuery('');
-    setSelectedCategory('All');
     setSearchScope('all');
     setSortMode('relevance');
     setLayoutMode('grid');
@@ -93,7 +89,7 @@ export default function Resources() {
         ]}
       />
 
-      <section className="py-16 pb-24 bg-gradient-to-b from-[#4f81ba] via-[#5a8ec6] to-[#6ca0d5]">
+      <section id="nav-dark-start" className="py-16 pb-24 bg-gradient-to-b from-[#4f81ba] via-[#5a8ec6] to-[#6ca0d5]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-10 overflow-hidden rounded-[1.75rem] border border-white/45 bg-white/10 p-5 shadow-[0_20px_80px_rgba(2,8,26,0.3)] backdrop-blur-sm sm:p-7">
             <div className="relative mb-5">
@@ -191,6 +187,7 @@ export default function Resources() {
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ delay: i * 0.05, duration: 0.5 }}
                   whileHover={{ y: -10, rotateX: 5 }}
+                  className="h-full"
                 >
                   <ResourceCard
                     name={resource.name}

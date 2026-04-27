@@ -81,7 +81,7 @@ function footerHtml() {
           </div>
           <p class="footer-about">Connecting Tracy residents to resources, events, and community support. A central hub for all ages and backgrounds.</p>
           <div class="footer-contact-row">${i.mapPin}<span>Tracy, California 95376</span></div>
-          <div class="footer-contact-row">${i.phone}<a href="tel:209-831-6200">209-831-6200</a></div>
+          <div class="footer-contact-row">${i.phone}<a href="tel:123-456-7890">123-456-7890</a></div>
           <div class="footer-contact-row">${i.mail}<a href="mailto:info@tracycommunity.org">info@tracycommunity.org</a></div>
         </div>
         <div>
@@ -257,7 +257,6 @@ function setupBreathing(root) {
 }
 
 function bindPage(root) {
-  /* Resources */
   root.querySelectorAll('[data-res-cat]').forEach((b) => {
     b.addEventListener('click', () => {
       const cat = b.getAttribute('data-res-cat');
@@ -283,7 +282,6 @@ function bindPage(root) {
     });
   });
 
-  /* Events */
   root.querySelectorAll('[data-ev-cat]').forEach((b) => {
     b.addEventListener('click', () => {
       state.events.activeCategory = b.getAttribute('data-ev-cat');
@@ -313,7 +311,6 @@ function bindPage(root) {
     });
   });
 
-  /* Programs */
   root.querySelectorAll('[data-pr-age]').forEach((b) => {
     b.addEventListener('click', () => {
       state.programs.ageFilter = b.getAttribute('data-pr-age');
@@ -341,7 +338,6 @@ function bindPage(root) {
     });
   });
 
-  /* Mental health filters */
   root.querySelector('[data-th-sp]')?.addEventListener('change', (e) => {
     state.mental.specialtyFilter = e.target.value;
     paint();
@@ -359,7 +355,6 @@ function bindPage(root) {
     paint();
   });
 
-  /* Volunteer */
   root.querySelectorAll('[data-vo-tab]').forEach((b) => {
     b.addEventListener('click', () => {
       state.volunteer.activeTab = b.getAttribute('data-vo-tab');
@@ -383,7 +378,6 @@ function bindPage(root) {
     paint();
   });
 
-  /* References accordion */
   root.querySelectorAll('.accordion-btn').forEach((btn) => {
     btn.addEventListener('click', () => {
       const idx = btn.getAttribute('data-acc');
